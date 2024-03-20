@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dfc31605-ffd0-429b-897d-616168260486" name="Changes" comment="Здесь будут храниться наши Python файлы">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="dfc31605-ffd0-429b-897d-616168260486" name="Changes" comment=".">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,7 +20,22 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PUSH_AUTO_UPDATE" value="true" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Tellurioom"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="1a33af14-f6e5-416b-8d0d-0aa2bfc0ba63" />
+        <option name="url" value="https://github.com/Tellurioom/Game--Akselerator-.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -72,7 +87,7 @@
       <workItem from="1710917320453" duration="223000" />
       <workItem from="1710917546368" duration="2572000" />
       <workItem from="1710920163847" duration="36000" />
-      <workItem from="1710920208852" duration="104000" />
+      <workItem from="1710920208852" duration="522000" />
     </task>
     <task id="LOCAL-00001" summary="Создание README">
       <option name="closed" value="true" />
@@ -122,7 +137,39 @@
       <option name="project" value="LOCAL" />
       <updated>1710920068517</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="библиотеки, которые были установленны у меня">
+      <option name="closed" value="true" />
+      <created>1710920633631</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1710920633631</updated>
+    </task>
+    <task id="LOCAL-00008" summary=".">
+      <option name="closed" value="true" />
+      <created>1710920653127</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1710920653127</updated>
+    </task>
+    <task id="LOCAL-00009" summary=".">
+      <option name="closed" value="true" />
+      <created>1710920660697</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1710920660697</updated>
+    </task>
+    <task id="LOCAL-00010" summary=".">
+      <option name="closed" value="true" />
+      <created>1710920671350</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1710920671350</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -143,6 +190,8 @@
     <MESSAGE value="Создание README" />
     <MESSAGE value="main.py файл для проверки импорта всего что нужно" />
     <MESSAGE value="Здесь будут храниться наши Python файлы" />
-    <option name="LAST_COMMIT_MESSAGE" value="Здесь будут храниться наши Python файлы" />
+    <MESSAGE value="библиотеки, которые были установленны у меня" />
+    <MESSAGE value="." />
+    <option name="LAST_COMMIT_MESSAGE" value="." />
   </component>
 </project>
