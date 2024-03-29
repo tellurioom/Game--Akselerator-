@@ -5,15 +5,15 @@ SIZE = WIDTH, HEIGHT = 600, 400
 BACKGROUND_COLOR = (255, 255, 255)
 FPS = 24
 
-tiles_file = '../source/tmw_desert_spacing.png'
-csv_file = '../source/desert.csv'
+tiles_path = '../source/tmw_desert_spacing.png'
+csv_path = '../source/desert.csv'
 
 
 class Tiles:
     def __init__(self, file_path: str, size=(32, 32)):
 
         # класс по загрузке тайлов
-        # принимает: путь к файлу с тайлами, размеры одного тайла
+        # принимает: путь к файлу с тайлами; размеры одного тайла
 
         self.tiles = []
         self.tiles_map = pygame.sprite.Group()
@@ -23,15 +23,17 @@ class Tiles:
         self.max_size = self.image.get_size()
         self.tile = pygame.Surface(self.size)
 
-    # функция по загрузке тайлов из файла
     def load_tiles(self):
+
+        # функция по загрузке тайлов из файла
+
         for y in range(1, self.max_size[1], self.size[1]+1):
             for x in range(1, self.max_size[0], self.size[0]+1):
                 self.tile = pygame.Surface(self.size)
                 self.tile.blit(self.image, (0, 0), (x, y, self.size[0], self.size[1]))
                 self.tiles.append(self.tile)
 
-    def get_map_size(self):
+    def get_map_size(self, csv_file):
 
         # функция по получению размеров итоговой карты
         # возвращает итоговый размер карты
@@ -53,7 +55,7 @@ class Tiles:
 
         # функция по отрисовки карты на экран
         # вызывать в основном цикле игры
-        # принимает: surface="экран", путь к файлу *.csv
+        # принимает: surface="экран"; путь к файлу *.csv
 
         if csv_file[len(csv_file)-4:len(csv_file)] != '.csv':
             raise NameError(f'{csv_file} не является файлом с расширением *.csv')
@@ -73,10 +75,10 @@ class Tiles:
 
 pygame.init()
 
-map = Tiles(tiles_file)
+map = Tiles(tiles_path)
 map.load_tiles()
 
-display = pygame.display.set_mode(map.get_map_size())
+display = pygame.display.set_mode(map.get_map_size(csv_path))
 clock = pygame.time.Clock()
 
 
@@ -88,7 +90,7 @@ while running:
             running = False
     display.fill(BACKGROUND_COLOR)
 
-    map.draw_tilemap(display, csv_file)
+    map.draw_tilemap(display, csv_path)
 
     pygame.display.update()
 pygame.quit()
