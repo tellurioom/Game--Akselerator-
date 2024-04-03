@@ -10,7 +10,7 @@ csv_path = '../source/desert.csv'
 
 
 class Tiles:
-    def __init__(self, file_path: str, size=(32, 32)):
+    def __init__(self, file_path: str, csv_file: str, size=(32, 32)):
 
         # класс по загрузке тайлов
         # принимает: путь к файлу с тайлами; размеры одного тайла
@@ -22,6 +22,7 @@ class Tiles:
         self.image = pygame.image.load(file_path)
         self.max_size = self.image.get_size()
         self.tile = pygame.Surface(self.size)
+        self.csv_file = csv_file
 
     def load_tiles(self):
 
@@ -33,13 +34,13 @@ class Tiles:
                 self.tile.blit(self.image, (0, 0), (x, y, self.size[0], self.size[1]))
                 self.tiles.append(self.tile)
 
-    def get_map_size(self, csv_file):
+    def get_map_size(self):
 
         # функция по получению размеров итоговой карты
         # возвращает итоговый размер карты
         # вызвать в методе display.set_mode()
 
-        with open(csv_file, newline='') as csvfile:
+        with open(self.csv_file, newline='') as csvfile:
             read = csv.reader(csvfile, delimiter=',')
             x = 0
             y = 0
@@ -75,10 +76,10 @@ class Tiles:
 
 pygame.init()
 
-map = Tiles(tiles_path)
+map = Tiles(tiles_path, csv_path)
 map.load_tiles()
 
-display = pygame.display.set_mode(map.get_map_size(csv_path))
+display = pygame.display.set_mode(map.get_map_size())
 clock = pygame.time.Clock()
 
 
