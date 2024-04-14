@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="left-up" width="45" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="9">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="left-up" width="45" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="17">
  <editorsettings>
-  <export target="sity..csv" format="csv"/>
+  <export target="sity.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" name="tilemap" tilewidth="16" tileheight="16" spacing="1" tilecount="486" columns="27">
   <image source="tilemap.png" width="458" height="305"/>
@@ -75,4 +75,14 @@
 961,962,961,962,0,940,941,0,0,0,0,0,0,0,0,514,746,746,0,0,0,0,0,683,0,746,0,746,0,516,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="4" name=" collision_map">
+  <object id="9" x="0" y="0" width="128" height="64"/>
+  <object id="10" x="240" y="0" width="240" height="64"/>
+  <object id="11" x="0" y="416" width="112" height="64"/>
+  <object id="12" x="0" y="192" width="128" height="192"/>
+  <object id="13" x="592" y="192" width="128" height="192"/>
+ </objectgroup>
+ <objectgroup id="6" name="events_object">
+  <object id="15" name="library_door" x="688" y="368" width="32" height="24"/>
+ </objectgroup>
 </map>

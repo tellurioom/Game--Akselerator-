@@ -1,0 +1,15 @@
+{
+"objects":[
+                {
+                 "height":24.00,
+                 "id":15,
+                 "name":"library_door",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32.00,
+                 "x":688,
+                 "y":368
+                }
+]
+}

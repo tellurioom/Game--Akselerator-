@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "sity.tmx",
+    "activeFile": "",
     "expandedProjectPaths": [
         "."
     ],
@@ -13,11 +13,11 @@
             "scaleInDock": 2
         },
         "sity.tmx": {
-            "scale": 1.5,
-            "selectedLayer": 0,
+            "scale": 2,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 283,
-                "y": 320.66666666666663
+                "x": 430,
+                "y": 487.5
             }
         },
         "sity.tmx#tilemap": {
@@ -31,20 +31,18 @@
     "last.exportedFilePath": "D:/Python/Innopolis/Game--Akselerator-/source",
     "last.imagePath": "D:/Python/Innopolis/Game--Akselerator-/source",
     "map.height": 30,
-    "map.lastUsedExportFilter": "CSV файлы (*.csv)",
+    "map.lastUsedExportFilter": "JSON map-файлы (*.tmj *.json)",
     "map.lastUsedFormat": "tmx",
     "map.renderOrder": null,
     "map.tileHeight": 16,
     "map.tileWidth": 16,
     "map.width": 45,
     "openFiles": [
-        "tilemap.tsx",
-        "sity.tmx"
     ],
     "project": "sity.tiled-project",
     "recentFiles": [
-        "tilemap.tsx",
-        "sity.tmx"
+        "sity.tmx",
+        "tilemap.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.margin": 0,

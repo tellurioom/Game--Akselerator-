@@ -66,7 +66,7 @@ class Player(pygame.sprite.Sprite):
         self.vel_y = 0
         self.speed = 5 * (image_scale / 2)
 
-    def update(self, display: pygame.display, frame: int, animation_delay: int):
+    def update(self, display: pygame.display, frame: int, animation_delay: int, collide_objects):
         self.vel_x = 0
         self.vel_y = 0
 
@@ -84,9 +84,10 @@ class Player(pygame.sprite.Sprite):
             self.vel_x += self.speed
             self.last_direction = 1
 
-        self.rect.x += self.vel_x
-        self.rect.y += self.vel_y
+        self.move(self.rect, (self.vel_x, self.vel_y), collide_objects)
+        self.animation(frame, animation_delay)
 
+    def animation(self, frame, animation_delay):
         if frame == animation_delay:
             self.frame += 1
             if self.frame >= 5:
@@ -115,3 +116,26 @@ class Player(pygame.sprite.Sprite):
                 self.image = self.images_frame_side[self.frame + self.action['idle']]
             else:
                 self.image = self.images_frame_side[self.frame + self.action['walk']]
+
+    def collision_test(self, rect, tiles):
+        collisions = []
+        for tile in tiles:
+            if rect.colliderect(tile.rect):
+                collisions.append(tile.rect)
+        return collisions
+
+    def move(self, rect, movement, tiles):  # movement = [5,2]
+        self.rect.x += movement[0]
+        collisions = self.collision_test(rect, tiles)
+        for tile in collisions:
+            if self.vel_x > 0:
+                self.rect.right = tile.left
+            if self.vel_x < 0:
+                self.rect.left = tile.right
+        self.rect.y += movement[1]
+        collisions = self.collision_test(rect, tiles)
+        for tile in collisions:
+            if self.vel_y > 0:
+                self.rect.bottom = tile.top
+            if self.vel_y < 0:
+                self.rect.top = tile.bottom
