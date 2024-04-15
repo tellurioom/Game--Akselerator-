@@ -1,0 +1,28 @@
+{
+    "button": {
+        "misc": {
+            "shape": "rounded_rectangle",
+            "shape_corner_radius": "10",
+            "border_width": "1",
+            "shadow_width": "0",
+            "text_horiz_alignment": "center",
+            "text_vert_alignment": "center"
+        }
+    },
+    "drop_down_menu": {
+        "misc": {
+            "expand_direction": "down"
+        },
+        "colours": {
+            "normal_bg": "#25292e",
+            "hovered_bg": "#35393e"
+        },
+        "drop_down_menu.#selected_option": {
+            "misc": {
+                "border_width": "1",
+                "open_button_width": "20",
+                "shadow_width": "0"
+            }
+        }
+    }
+}

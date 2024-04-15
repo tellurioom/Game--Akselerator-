@@ -1,5 +1,6 @@
 import sys
 import pygame
+import pygame_gui
 from Player import Player
 from Tile_map import Tiles
 from menu import Menu
@@ -29,7 +30,8 @@ csv_path = f'{source}sity._ground.csv'
 csv_path_1 = f'{source}sity._object.csv'
 collision_objects = f'{source}collision_map.json'
 collision_events = f'{source}events_objects.json'
-ui_theme_path = f'{source}theme.json'
+ui1_theme_path = f'{source}theme_1.json'
+ui2_theme_path = f'{source}theme_2.json'
 
 all_sprites = pygame.sprite.Group()
 player = Player(64, 64, (800, 800))
@@ -39,10 +41,10 @@ map_object = Tiles(tiles_path, csv_path_1, (1, 1), (16, 16), False, map_scale)
 collision_map = map_ground.collision_map_objects
 events_objects = map_ground.events_map_objects
 
-menu = Menu(display, ui_theme_path)
-settings = Settings(display, ui_theme_path)
-dialog_box = DialogBox(display, ui_theme_path, "Hello Friends", (100, 100), (100, 50))
-
+menu = Menu(display, ui1_theme_path)
+settings = Settings(display, ui2_theme_path)
+dialog_box = DialogBox(display, ui1_theme_path, "Hello Friends", (100, 100), (100, 50))
+print(menu.quit_button.get_object_ids(), settings.back_button.get_object_ids())
 
 scene = 1
 running = True
@@ -52,6 +54,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+            print('quit')
         menu.ui_events(event)
         settings.ui_events(event)
         dialog_box.ui_events(event)
@@ -62,14 +65,19 @@ while running:
 
         if menu.button_event(menu.play_button):
             scene = 3
-        if menu.button_event(menu.settings_button):
+        elif menu.button_event(menu.settings_button):
             scene = 2
-        if menu.button_event(menu.quit_button):
+        elif menu.button_event(menu.quit_button):
+            print('quit_button')
             pygame.quit()
             sys.exit()
 
     elif scene == 2:
         settings.draw(display, FPS)
+
+        if settings.button_event(settings.back_button):
+            print('back_button')
+            scene = 1
 
     elif scene == 3:
         all_sprites.update(display, an_frame, animation_delay, collision_map)
