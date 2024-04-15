@@ -1,6 +1,10 @@
+import sys
 import pygame
 from Player import Player
 from Tile_map import Tiles
+from menu import Menu
+from settings import Settings
+from dialog import DialogBox
 
 
 SIZE = WIDTH, HEIGHT = 1000, 600
@@ -9,6 +13,7 @@ FPS = 30
 an_frame = 0
 animation_delay = 10
 map_scale = 2
+
 
 pygame.init()
 pygame.font.init()
@@ -19,23 +24,27 @@ display = pygame.display.set_mode((1400, 900))
 clock = pygame.time.Clock()
 
 source = '../source/'
-tiles_path = f'{source}/tilemap.png'
-csv_path = f'{source}/sity._ground.csv'
-csv_path_1 = f'{source}/sity._object.csv'
-collision_objects = f'{source}/collision_map.json'
-collision_events = f'{source}/events_objects.json'
+tiles_path = f'{source}tilemap.png'
+csv_path = f'{source}sity._ground.csv'
+csv_path_1 = f'{source}sity._object.csv'
+collision_objects = f'{source}collision_map.json'
+collision_events = f'{source}events_objects.json'
+ui_theme_path = f'{source}theme.json'
 
 all_sprites = pygame.sprite.Group()
-player = Player(64, 64, (180, 180))
+player = Player(64, 64, (800, 800))
 all_sprites.add(player)
-
 map_ground = Tiles(tiles_path, csv_path, (1, 1), (16, 16), False, map_scale, collision_objects, collision_events)
 map_object = Tiles(tiles_path, csv_path_1, (1, 1), (16, 16), False, map_scale)
 collision_map = map_ground.collision_map_objects
 events_objects = map_ground.events_map_objects
 
+menu = Menu(display, ui_theme_path)
+settings = Settings(display, ui_theme_path)
+dialog_box = DialogBox(display, ui_theme_path, "Hello Friends", (100, 100), (100, 50))
 
-sceene = 1
+
+scene = 1
 running = True
 while running:
     clock.tick(FPS)
@@ -43,9 +52,26 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        menu.ui_events(event)
+        settings.ui_events(event)
+        dialog_box.ui_events(event)
     display.fill((50, 50, 50))
 
-    if sceene == 1:
+    if scene == 1:
+        menu.draw(display, FPS)
+
+        if menu.button_event(menu.play_button):
+            scene = 3
+        if menu.button_event(menu.settings_button):
+            scene = 2
+        if menu.button_event(menu.quit_button):
+            pygame.quit()
+            sys.exit()
+
+    elif scene == 2:
+        settings.draw(display, FPS)
+
+    elif scene == 3:
         all_sprites.update(display, an_frame, animation_delay, collision_map)
 
         map_ground.draw(display)
@@ -53,7 +79,10 @@ while running:
         all_sprites.draw(display)
 
         if map_ground.events_call(player) == 'library_door':
-            sceene = 2
+            scene = 4
+
+        if pygame.key.get_pressed()[pygame.K_ESCAPE]:
+            scene = 1
 
     pygame.display.update()
     if an_frame >= animation_delay:
