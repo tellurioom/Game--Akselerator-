@@ -1,6 +1,6 @@
 import pygame
-from Player import Player
-from Tile_map import Tiles
+from player import Player
+from tile_map import Tiles
 
 
 map_scale = 2

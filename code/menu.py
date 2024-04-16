@@ -25,3 +25,4 @@ class Menu:
     @staticmethod
     def button_event(button):
         return button.check_pressed()
+
