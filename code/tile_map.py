@@ -6,8 +6,14 @@ import pygame
 class Tiles:
     def __init__(self, image_file: str, csv_file: str, borders=(1, 1), size=(32, 32), start_border=True, scale=1, collision_map_file='', events_map_file=''):
 
+        """
         # класс по загрузке тайлов
-        # принимает: путь к файлу с тайлами; размеры одного тайла
+        # принимает:
+        # путь к файлу с тайлами; путь к файлу *.csv; отступы между тайлами;
+          размеры одного тайла; наличие отступа 0x0 в файле тайлов; изменение размера;
+          путь к файлу с объектами колизии *.json;
+          путь к файлу с объектами событий *.json;
+        """
 
         self.files = [image_file, csv_file, collision_map_file, events_map_file]
         self.csv_file = csv_file
@@ -16,10 +22,10 @@ class Tiles:
             if csv_file[len(csv_file) - 4:len(csv_file)] != '.csv':
                 raise NameError(f'{csv_file} не является файлом с расширением *.csv')
 
-            if collision_map_file[len(collision_map_file) - 4:len(collision_map_file)] != '.json':
+            if collision_map_file[len(collision_map_file) - 5:len(collision_map_file)] != '.json':
                 raise NameError(f'{collision_map_file} не является файлом с расширением *.json')
 
-            if collision_map_file[len(events_map_file) - 4:len(events_map_file)] != '.json':
+            if events_map_file[len(events_map_file) - 5:len(events_map_file)] != '.json':
                 raise NameError(f'{events_map_file} не является файлом с расширением *.json')
 
             for files in self.files:
@@ -29,6 +35,7 @@ class Tiles:
 
         except FileNotFoundError:
             raise NameError(f'Не найден путь к файлу {files}')
+
         self.scale = scale
         self.image = pygame.image.load(image_file)
         self.image = pygame.transform.scale_by(self.image, scale)
@@ -53,7 +60,9 @@ class Tiles:
 
     def load_tiles(self):
 
+        """
         # функция по загрузке тайлов из файла
+        """
 
         start_x = 1
         start_y = 1
@@ -69,17 +78,20 @@ class Tiles:
 
     def get_map_size(self):
 
+        """
         # функция по получению размеров итоговой карты
         # возвращает итоговый размер карты
-        # вызвать в методе display.set_mode()
+        """
 
         return self.map_size
 
     def draw(self, display: pygame.display, screen_scale=1.0):
 
+        """
         # функция по отрисовки карты на экран
         # вызывать в основном цикле игры
-        # принимает: surface="экран"; путь к файлу *.csv
+        # принимает: surface="экран"; путь к файлу *.csv; изменение размеров экрана
+        """
 
         self.screen_scale = screen_scale
         with open(self.csv_file, newline='') as csvfile:
@@ -104,9 +116,11 @@ class Tiles:
 
     def creat_collision_map(self, file: str):
 
+        """
         # функция по отрисовке карты колизей в игровой области
         # вызывать в основном цикле игры
         # принимает: путь к файлу *.json
+        """
 
         with open(file, newline='') as json_data:
             data = json.load(json_data)
@@ -121,6 +135,13 @@ class Tiles:
                 self.collision_map_objects.add(sprite)
 
     def creat_events_map(self, file: str):
+
+        """
+        # функция по отрисовке объектов событий
+        # вызывать в основном цикле игры
+        # принимает: путь к файлу *.json
+        """
+
         with open(file, newline='') as json_data:
             data = json.load(json_data)
             js_object = data['objects']
@@ -135,5 +156,13 @@ class Tiles:
                 self.events_map_objects.add(sprite)
 
     def events_call(self, player: pygame.sprite.Sprite):
+
+        """
+         # функция вызова ивента при столкновении игрока с объектом событий
+         # вызывать в основном цикле игры
+         # принимает: спрайт игрока
+         # возвращает: имя объекта с которым произошло столкновение
+         """
+
         for hits in pygame.sprite.spritecollide(player, self.events_map_objects, False):
             return hits.name
