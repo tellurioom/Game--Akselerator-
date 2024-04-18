@@ -21,6 +21,7 @@ class Menu:
     def draw(self, display, clock):
         self.ui_manager.update(clock / 1000)
         self.ui_manager.draw_ui(display)
+        self.ui_manager.set_window_resolution(display.get_size())
 
     @staticmethod
     def button_event(button):

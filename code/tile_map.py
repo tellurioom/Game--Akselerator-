@@ -16,6 +16,12 @@ class Tiles:
             if csv_file[len(csv_file) - 4:len(csv_file)] != '.csv':
                 raise NameError(f'{csv_file} не является файлом с расширением *.csv')
 
+            if collision_map_file[len(collision_map_file) - 4:len(collision_map_file)] != '.json':
+                raise NameError(f'{collision_map_file} не является файлом с расширением *.json')
+
+            if collision_map_file[len(events_map_file) - 4:len(events_map_file)] != '.json':
+                raise NameError(f'{events_map_file} не является файлом с расширением *.json')
+
             for files in self.files:
                 if files == '':
                     break
@@ -33,6 +39,7 @@ class Tiles:
         self.tile = pygame.Surface(self.size)
         self.borders = (borders[0] * scale, borders[1] * scale)
         self.start_border = start_border
+        self.screen_scale = 1.0
         self.load_tiles()
 
         self.collision_map_objects = pygame.sprite.Group()
@@ -66,24 +73,15 @@ class Tiles:
         # возвращает итоговый размер карты
         # вызвать в методе display.set_mode()
 
-        with open(self.csv_file, newline='') as csvfile:
-            read = csv.reader(csvfile, delimiter=',')
-            x = 0
-            y = 0
-            for row in read:
-                x = 0
-                for _ in row:
-                    x += self.size[0]
-                y += self.size[1]
-            self.map_size = (x, y)
         return self.map_size
 
-    def draw(self, display: pygame.display):
+    def draw(self, display: pygame.display, screen_scale=1.0):
 
         # функция по отрисовки карты на экран
         # вызывать в основном цикле игры
         # принимает: surface="экран"; путь к файлу *.csv
 
+        self.screen_scale = screen_scale
         with open(self.csv_file, newline='') as csvfile:
             read = csv.reader(csvfile, delimiter=',')
             x = 0
@@ -94,38 +92,45 @@ class Tiles:
                     try:
 
                         if tile != '-1':
-                            display.blit(self.tiles[int(tile)], (x, y))
+                            scale_image = pygame.transform.scale_by(self.tiles[int(tile)], self.screen_scale)
+                            display.blit(scale_image, (x * self.screen_scale, y * self.screen_scale))
 
                     except IndexError:
                         raise NameError(f'Размер тайла не соответсвует карте тайлов')
 
                     x += self.size[0]
                 y += self.size[1]
+                self.map_size = (x, y)
 
-    def creat_collision_map(self, file):
+    def creat_collision_map(self, file: str):
+
+        # функция по отрисовке карты колизей в игровой области
+        # вызывать в основном цикле игры
+        # принимает: путь к файлу *.json
+
         with open(file, newline='') as json_data:
             data = json.load(json_data)
             js_object = data['objects']
             for options in js_object:
                 sprite = pygame.sprite.Sprite()
-                sprite.image = pygame.Surface((options['width'] * self.scale, options['height'] * self.scale))
+                sprite.image = pygame.Surface((options['width'] * self.scale * self.screen_scale, options['height'] * self.scale * self.screen_scale))
                 sprite.image.fill(pygame.Color('Green'))
                 sprite.rect = sprite.image.get_rect()
-                sprite.rect.x = options['x'] * self.scale
-                sprite.rect.y = options['y'] * self.scale
+                sprite.rect.x = options['x'] * self.scale * self.screen_scale
+                sprite.rect.y = options['y'] * self.scale * self.screen_scale
                 self.collision_map_objects.add(sprite)
 
-    def creat_events_map(self, file):
+    def creat_events_map(self, file: str):
         with open(file, newline='') as json_data:
             data = json.load(json_data)
             js_object = data['objects']
             for options in js_object:
                 sprite = pygame.sprite.Sprite()
-                sprite.image = pygame.Surface((options['width'] * self.scale, options['height'] * self.scale))
+                sprite.image = pygame.Surface((options['width'] * self.scale * self.screen_scale, options['height'] * self.scale * self.screen_scale))
                 sprite.image.fill(pygame.Color('Green'))
                 sprite.rect = sprite.image.get_rect()
-                sprite.rect.x = options['x'] * self.scale
-                sprite.rect.y = options['y'] * self.scale
+                sprite.rect.x = options['x'] * self.scale * self.screen_scale
+                sprite.rect.y = options['y'] * self.scale * self.screen_scale
                 sprite.name = options['name']
                 self.events_map_objects.add(sprite)
 

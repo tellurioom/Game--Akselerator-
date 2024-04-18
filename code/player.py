@@ -66,22 +66,22 @@ class Player(pygame.sprite.Sprite):
         self.vel_y = 0
         self.speed = 5 * (image_scale / 2)
 
-    def update(self, display: pygame.display, frame: int, animation_delay: int, collide_objects):
+    def update(self, display: pygame.display, frame: int, animation_delay: int, collide_objects, size_scale):
         self.vel_x = 0
         self.vel_y = 0
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w]:
-            self.vel_y -= self.speed
+            self.vel_y -= self.speed * size_scale
             self.last_direction = 0
         if keys[pygame.K_s]:
-            self.vel_y += self.speed
+            self.vel_y += self.speed * size_scale
             self.last_direction = 2
         if keys[pygame.K_a]:
-            self.vel_x -= self.speed
+            self.vel_x -= self.speed * size_scale
             self.last_direction = 3
         if keys[pygame.K_d]:
-            self.vel_x += self.speed
+            self.vel_x += self.speed * size_scale
             self.last_direction = 1
 
         self.move(self.rect, (self.vel_x, self.vel_y), collide_objects)
@@ -124,7 +124,7 @@ class Player(pygame.sprite.Sprite):
                 collisions.append(tile.rect)
         return collisions
 
-    def move(self, rect, movement, tiles):  # movement = [5,2]
+    def move(self, rect, movement, tiles):
         self.rect.x += movement[0]
         collisions = self.collision_test(rect, tiles)
         for tile in collisions:
@@ -139,3 +139,7 @@ class Player(pygame.sprite.Sprite):
                 self.rect.bottom = tile.top
             if self.vel_y < 0:
                 self.rect.top = tile.bottom
+
+    def draw(self, display, screen_scale):
+        scale_image = pygame.transform.scale_by(self.image, screen_scale)
+        display.blit(scale_image, (self.rect.x, self.rect.y))
