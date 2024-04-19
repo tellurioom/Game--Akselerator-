@@ -34,7 +34,7 @@ ui2_theme_path = f'{source}theme_2.json'
 settings_paths = [f'{source}UI_Flat_Checkmark_Large.png', f'{source}UI_Flat_Cross_Large.png']
 
 all_sprites = pygame.sprite.Group()
-player = Player(64, 64, (200, 200))
+player = Player(16, 32, (200, 200))
 all_sprites.add(player)
 map_ground = Tiles(tiles_path, csv_path, (1, 1), (16, 16), False, map_scale, collision_objects_path, collision_events_path)
 map_object = Tiles(tiles_path, csv_path_1, (1, 1), (16, 16), False, map_scale)
@@ -43,10 +43,12 @@ events_objects = map_ground.events_map_objects
 
 menu = Menu(display, ui1_theme_path)
 settings = Settings(display, ui2_theme_path, settings_paths)
-dialog_box = DialogBox(display, ui1_theme_path, "Hello Friends", (100, 100), (100, 50))
 screen_size_scale = display.get_size()[0] / SIZE[0]
 map_ground.creat_collision_map(collision_objects_path)
 map_ground.creat_events_map(collision_events_path)
+
+dialog_box_1 = DialogBox(display, ui1_theme_path, "w,a,s,d - движение", (200, 50), (100, 50))
+dialog_box_2 = DialogBox(display, ui1_theme_path, "Тебе надо на работу!", (900, 20), (100, 50))
 
 
 scene = 1
@@ -63,7 +65,8 @@ while running:
         elif scene == 2:
             settings.ui_events(event)
         elif scene == 3:
-            dialog_box.ui_events(event)
+            dialog_box_1.ui_events(event)
+            dialog_box_2.ui_events(event)
 
     display.fill((50, 50, 50))
 
@@ -108,7 +111,13 @@ while running:
         map_object.draw(display, screen_size_scale)
         map_ground.creat_collision_map(collision_objects_path)
         map_ground.creat_events_map(collision_events_path)
+
+        # display.blit(pygame.Surface(player.rect.size), player.rect)
         player.draw(display, screen_size_scale)
+
+        dialog_box_1.draw(display, FPS)
+        if not dialog_box_1.on_draw:
+            dialog_box_2.draw(display, FPS)
 
     pygame.display.update()
     if an_frame >= animation_delay:

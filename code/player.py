@@ -2,65 +2,38 @@ import pygame
 
 
 source = '../source/'
-image_scale = 1
+image_scale = 2
 
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, width: int, height: int, spawn=(0, 0)):
         super().__init__()
-        self.sprite_sheet_side_idle = pygame.image.load(f'{source}_side idle.png').convert_alpha()
-        self.sprite_sheet_down_idle = pygame.image.load(f'{source}_down idle.png').convert_alpha()
-        self.sprite_sheet_up_idle = pygame.image.load(f'{source}_up idle.png').convert_alpha()
-        self.sprite_sheet_side_walk = pygame.image.load(f'{source}_side walk.png').convert_alpha()
-        self.sprite_sheet_down_walk = pygame.image.load(f'{source}_down walk.png').convert_alpha()
-        self.sprite_sheet_up_walk = pygame.image.load(f'{source}_up walk.png').convert_alpha()
 
-        self.pack_sheet_side = [self.sprite_sheet_side_idle, self.sprite_sheet_side_walk]
-        self.pack_sheet_down = [self.sprite_sheet_down_idle, self.sprite_sheet_down_walk]
-        self.pack_sheet_up = [self.sprite_sheet_up_idle, self.sprite_sheet_up_walk]
+        self.sprite_sheet_idle = pygame.image.load(f'{source}Adam_idle_anim_16x16.png').convert_alpha()
+        self.sprite_sheet_walk = pygame.image.load(f'{source}Adam_run_16x16.png').convert_alpha()
 
-        self.images_frame_side = []
-        self.images_frame_down = []
-        self.images_frame_up = []
+        self.images_frame_idle = []
+        self.images_frame_walk = []
 
-        for sheet in self.pack_sheet_side:
-            for y in range(0, 2):
-                for x in range(0, 4):
-                    if y == 1 and x > 0:
-                        break
-                    self.image = pygame.Surface((width, height))
-                    self.image.blit(sheet, (0, 0), (x * width, y * height, width, height))
-                    self.image = pygame.transform.scale_by(self.image, image_scale)
-                    self.image.set_colorkey((0, 0, 0))
-                    self.images_frame_side.append(self.image)
+        for x in range(0, 24):
+            self.image = pygame.Surface((width, height))
+            self.image.blit(self.sprite_sheet_idle, (0, 0), (x * width, 8, width, height-8))
+            self.image = pygame.transform.scale_by(self.image, image_scale)
+            self.image.set_colorkey((0, 0, 0))
+            self.images_frame_idle.append(self.image)
 
-        for sheet in self.pack_sheet_down:
-            for y in range(0, 2):
-                for x in range(0, 4):
-                    if y == 1 and x > 0:
-                        break
-                    self.image = pygame.Surface((width, height))
-                    self.image.blit(sheet, (0, 0), (x * width, y * height, width, height))
-                    self.image = pygame.transform.scale_by(self.image, image_scale)
-                    self.image.set_colorkey((0, 0, 0))
-                    self.images_frame_down.append(self.image)
+        for x in range(0, 24):
+            self.image = pygame.Surface((width, height))
+            self.image.blit(self.sprite_sheet_walk, (0, 0), (x * width, 8, width, height-8))
+            self.image = pygame.transform.scale_by(self.image, image_scale)
+            self.image.set_colorkey((0, 0, 0))
+            self.images_frame_walk.append(self.image)
 
-        for sheet in self.pack_sheet_up:
-            for y in range(0, 2):
-                for x in range(0, 4):
-                    if y == 1 and x > 0:
-                        break
-                    self.image = pygame.Surface((width, height))
-                    self.image.blit(sheet, (0, 0), (x * width, y * height, width, height))
-                    self.image = pygame.transform.scale_by(self.image, image_scale)
-                    self.image.set_colorkey((0, 0, 0))
-                    self.images_frame_up.append(self.image)
-
-        self.rect = pygame.Rect(0, 0, width, height)
+        self.rect = pygame.Rect(spawn, (16 * image_scale, 24 * image_scale))
         self.rect.center = spawn
         self.frame = 0
         self.last_direction = 2
-        self.action = {'idle': 0, 'walk': 5}
+        self.action = [0, 6, 12, 18]
 
         self.vel_x = 0
         self.vel_y = 0
@@ -73,16 +46,16 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w]:
             self.vel_y -= self.speed * size_scale
-            self.last_direction = 0
+            self.last_direction = 1
         if keys[pygame.K_s]:
             self.vel_y += self.speed * size_scale
-            self.last_direction = 2
+            self.last_direction = 3
         if keys[pygame.K_a]:
             self.vel_x -= self.speed * size_scale
-            self.last_direction = 3
+            self.last_direction = 2
         if keys[pygame.K_d]:
             self.vel_x += self.speed * size_scale
-            self.last_direction = 1
+            self.last_direction = 0
 
         self.move(self.rect, (self.vel_x, self.vel_y), collide_objects)
         self.animation(frame, animation_delay)
@@ -90,32 +63,13 @@ class Player(pygame.sprite.Sprite):
     def animation(self, frame, animation_delay):
         if frame == animation_delay:
             self.frame += 1
-            if self.frame >= 5:
+            if self.frame >= 6:
                 self.frame = 0
 
-        if self.last_direction == 0:
-            if self.vel_y == 0:
-                self.image = self.images_frame_up[self.frame + self.action['idle']]
-            else:
-                self.image = self.images_frame_up[self.frame + self.action['walk']]
-
-        elif self.last_direction == 1:
-            if self.vel_x == 0:
-                self.image = pygame.transform.flip(self.images_frame_side[self.frame + self.action['idle']], True, False)
-            else:
-                self.image = pygame.transform.flip(self.images_frame_side[self.frame + self.action['walk']], True,False)
-
-        elif self.last_direction == 2:
-            if self.vel_y == 0:
-                self.image = self.images_frame_down[self.frame + self.action['idle']]
-            else:
-                self.image = self.images_frame_down[self.frame + self.action['walk']]
-
-        elif self.last_direction == 3:
-            if self.vel_x == 0:
-                self.image = self.images_frame_side[self.frame + self.action['idle']]
-            else:
-                self.image = self.images_frame_side[self.frame + self.action['walk']]
+        if self.vel_x != 0 or self.vel_y != 0:
+            self.image = self.images_frame_walk[self.frame + self.action[self.last_direction]]
+        else:
+            self.image = self.images_frame_idle[self.frame + self.action[self.last_direction]]
 
     def collision_test(self, rect, tiles):
         collisions = []

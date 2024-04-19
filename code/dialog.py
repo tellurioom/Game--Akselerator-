@@ -13,14 +13,19 @@ class DialogBox:
         box_button_rect = pygame.Rect((self.text_box.rect.x, self.text_box.rect.bottom), (self.text_box.rect.width, 40))
         self.button_close = pygame_gui.elements.UIButton(box_button_rect, 'Close', self.ui_manager)
 
+        self.on_draw = True
+
     def ui_events(self, event):
         self.ui_manager.process_events(event)
 
     def draw(self, display, clock):
-        self.ui_manager.update(clock / 1000)
-        self.ui_manager.draw_ui(display)
+        if self.on_draw:
+            self.ui_manager.update(clock / 1000)
+            self.ui_manager.draw_ui(display)
 
-    @staticmethod
-    def button_event(button):
-        return button.check_pressed()
+            self.close()
+
+    def close(self):
+        if self.button_close.check_pressed():
+            self.on_draw = False
 

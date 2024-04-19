@@ -19,13 +19,13 @@ class Tiles:
         self.csv_file = csv_file
         try:
 
-            if csv_file[len(csv_file) - 4:len(csv_file)] != '.csv':
+            if csv_file[len(csv_file) - 4:len(csv_file)] != '.csv' and csv_file != '':
                 raise NameError(f'{csv_file} не является файлом с расширением *.csv')
 
-            if collision_map_file[len(collision_map_file) - 5:len(collision_map_file)] != '.json':
+            if collision_map_file[len(collision_map_file) - 5:len(collision_map_file)] != '.json' and collision_map_file != '':
                 raise NameError(f'{collision_map_file} не является файлом с расширением *.json')
 
-            if events_map_file[len(events_map_file) - 5:len(events_map_file)] != '.json':
+            if events_map_file[len(events_map_file) - 5:len(events_map_file)] != '.json' and events_map_file != '':
                 raise NameError(f'{events_map_file} не является файлом с расширением *.json')
 
             for files in self.files:
