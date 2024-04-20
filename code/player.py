@@ -39,7 +39,7 @@ class Player(pygame.sprite.Sprite):
         self.vel_y = 0
         self.speed = 5 * (image_scale / 2)
 
-    def update(self, display: pygame.display, frame: int, animation_delay: int, collide_objects, size_scale):
+    def update(self, display: pygame.display, frame: int, animation_delay: int, collide_objects, size_scale : float):
         self.vel_x = 0
         self.vel_y = 0
 

@@ -4,7 +4,8 @@ import pygame
 
 
 class Tiles:
-    def __init__(self, image_file: str, csv_file: str, borders=(1, 1), size=(32, 32), start_border=True, scale=1, collision_map_file='', events_map_file=''):
+    def __init__(self, image_file: str, csv_file: str, borders=(1, 1), size=(32, 32), start_border=True, scale=1,
+                 collision_map_file='', events_map_file=''):
 
         """
         # класс по загрузке тайлов

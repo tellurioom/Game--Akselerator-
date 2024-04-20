@@ -19,7 +19,7 @@ pygame.init()
 pygame.font.init()
 pygame.mixer.init()
 
-pygame.display.set_caption('Pygame')
+pygame.display.set_caption('Adam a rage')
 display = pygame.display.set_mode(SIZE)
 clock = pygame.time.Clock()
 
