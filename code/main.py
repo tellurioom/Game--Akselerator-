@@ -1,94 +1,57 @@
+import sys
 import pygame
+from player import Player
+from tile_map import Tiles
+from menu import Menu
+from settings import Settings
+from dialog import DialogBox
 
 
-SIZE = WIDTH, HEIGHT = 1000, 600
+SIZE = WIDTH, HEIGHT = 1280, 720
 BACKGROUND_COLOR = (255, 255, 255)
 FPS = 30
-source = '../source/'
-animation_delay = 12
-
-
-class Player(pygame.sprite.Sprite):
-    def __init__(self, width: int, height: int):
-        super().__init__()
-        self.sprite_sheet_side = pygame.image.load(f'{source}_side idle.png').convert_alpha()
-        self.sprite_sheet_down = pygame.image.load(f'{source}_down idle.png').convert_alpha()
-        self.sprite_sheet_up = pygame.image.load(f'{source}_up idle.png').convert_alpha()
-
-        self.images_frame_side = []
-        y = 0
-        for x in range(0, 4):
-            self.image = pygame.Surface((width, height)).convert_alpha()
-            self.image.blit(self.sprite_sheet_side, (0, 0), (x * width, 0, width, height))
-            self.image = pygame.transform.scale(self.image, (width * 2, height * 2))
-            self.image.set_colorkey((0, 0, 0))
-            self.images_frame_side.append(self.image)
-
-        self.images_frame_down = []
-        for x in range(0, 4):
-            self.image = pygame.Surface((width, height)).convert_alpha()
-            self.image.blit(self.sprite_sheet_down, (0, 0), (x * width, 0, width, height))
-            self.image = pygame.transform.scale(self.image, (width * 2, height * 2))
-            self.image.set_colorkey((0, 0, 0))
-            self.images_frame_down.append(self.image)
-
-        self.images_frame_up = []
-        for x in range(0, 4):
-            self.image = pygame.Surface((width, height)).convert_alpha()
-            self.image.blit(self.sprite_sheet_up, (0, 0), (x * width, 0, width, height))
-            self.image = pygame.transform.scale(self.image, (width * 2, height * 2))
-            self.image.set_colorkey((0, 0, 0))
-            self.images_frame_up.append(self.image)
-
-        self.rect = pygame.Rect(0, 0, width, height)
-        self.frame = 0
-
-        self.vel_x = 0
-        self.vel_y = 0
-        self.speed = 5
-
-    def update(self, display: pygame.display, frame: int):
-        self.vel_x = 0
-        self.vel_y = 0
-
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_w]:
-            self.vel_y -= self.speed
-        if keys[pygame.K_s]:
-            self.vel_y += self.speed
-        if keys[pygame.K_a]:
-            self.vel_x -= self.speed
-        if keys[pygame.K_d]:
-            self.vel_x += self.speed
-
-        self.rect.x += self.vel_x
-        self.rect.y += self.vel_y
-
-        if frame == animation_delay:
-            self.frame += 1
-        if self.frame >= len(self.images_frame_side):
-            self.frame = 0
-
-        if self.vel_x > 0:
-            self.image = pygame.transform.flip(self.images_frame_side[self.frame], True, False)
-        elif self.vel_x < 0:
-            self.image = self.images_frame_side[self.frame]
-        elif self.vel_y >= 0:
-            self.image = self.images_frame_down[self.frame]
-        elif self.vel_y < 0:
-            self.image = self.images_frame_up[self.frame]
+an_frame = 0
+animation_delay = 8
+map_scale = 2
 
 
 pygame.init()
-pygame.display.set_caption("Pygame")
+pygame.font.init()
+pygame.mixer.init()
+
+pygame.display.set_caption('Adam a rage')
 display = pygame.display.set_mode(SIZE)
 clock = pygame.time.Clock()
 
-all_sprites = pygame.sprite.Group()
-player = Player(64, 64)
-all_sprites.add(player)
+source = '../source/'
+tiles_path = f'{source}tilemap.png'
+csv_path = f'{source}sity._ground.csv'
+csv_path_1 = f'{source}sity._object.csv'
+collision_objects_path = f'{source}collision_map.json'
+collision_events_path = f'{source}events_objects.json'
+ui1_theme_path = f'{source}theme_1.json'
+ui2_theme_path = f'{source}theme_2.json'
+settings_paths = [f'{source}UI_Flat_Checkmark_Large.png', f'{source}UI_Flat_Cross_Large.png']
 
-an_frame = 0
+all_sprites = pygame.sprite.Group()
+player = Player(16, 32, (200, 200))
+all_sprites.add(player)
+map_ground = Tiles(tiles_path, csv_path, (1, 1), (16, 16), False, map_scale, collision_objects_path, collision_events_path)
+map_object = Tiles(tiles_path, csv_path_1, (1, 1), (16, 16), False, map_scale)
+collision_map = map_ground.collision_map_objects
+events_objects = map_ground.events_map_objects
+
+menu = Menu(display, ui1_theme_path)
+settings = Settings(display, ui2_theme_path, settings_paths)
+screen_size_scale = display.get_size()[0] / SIZE[0]
+map_ground.creat_collision_map(collision_objects_path)
+map_ground.creat_events_map(collision_events_path)
+
+dialog_box_1 = DialogBox(display, ui1_theme_path, "w,a,s,d - движение", (200, 50), (100, 50))
+dialog_box_2 = DialogBox(display, ui1_theme_path, "Тебе надо на работу!", (900, 20), (100, 50))
+
+
+scene = 1
 running = True
 while running:
     clock.tick(FPS)
@@ -96,11 +59,70 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    display.fill((0, 0, 0))
 
-    all_sprites.update(display, an_frame)
-    all_sprites.draw(display)
+        if scene == 1:
+            menu.ui_events(event)
+        elif scene == 2:
+            settings.ui_events(event)
+        elif scene == 3:
+            dialog_box_1.ui_events(event)
+            dialog_box_2.ui_events(event)
+
+    display.fill((50, 50, 50))
+
+    if scene == 1:
+        menu.draw(display, FPS)
+
+        if menu.button_event(menu.play_button):
+            scene = 3
+        elif menu.button_event(menu.settings_button):
+            scene = 2
+        elif menu.button_event(menu.quit_button):
+            pygame.quit()
+            sys.exit()
+
+    elif scene == 2:
+        settings.draw(display, FPS, screen_size_scale)
+        settings.check_box(display)
+        if settings.button_event(settings.back_button):
+            scene = 1
+        elif settings.button_event(settings.full_screen_button):
+            if settings.screen_full == "Screen full: ON":
+                pygame.display.toggle_fullscreen()
+            if settings.screen_full == "Screen full: OFF":
+                pygame.display.toggle_fullscreen()
+
+        if display.get_size() != settings.new_display_size:
+            pygame.display.set_mode(settings.new_display_size)
+            screen_size_scale = display.get_size()[0] / SIZE[0]
+            player.rect.x *= screen_size_scale
+            player.rect.y *= screen_size_scale
+
+    elif scene == 3:
+        player.update(display, an_frame, animation_delay, collision_map, screen_size_scale)
+
+        if map_ground.events_call(player) == 'library_door':
+            scene = 4
+
+        elif pygame.key.get_pressed()[pygame.K_ESCAPE]:
+            scene = 1
+
+        map_ground.draw(display, screen_size_scale)
+        map_object.draw(display, screen_size_scale)
+        map_ground.creat_collision_map(collision_objects_path)
+        map_ground.creat_events_map(collision_events_path)
+
+        # display.blit(pygame.Surface(player.rect.size), player.rect)
+        player.draw(display, screen_size_scale)
+
+        dialog_box_1.draw(display, FPS)
+        if not dialog_box_1.on_draw:
+            dialog_box_2.draw(display, FPS)
+
     pygame.display.update()
-
-    if an_frame >= animation_delay: an_frame = 0
+    if an_frame >= animation_delay:
+        an_frame = 0
+pygame.mixer.quit()
+pygame.font.quit()
 pygame.quit()
+sys.exit()

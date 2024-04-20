@@ -21,7 +21,7 @@ def level_menu():
 
 
 mainmenu = pygame_menu.Menu('Welcome', 600, 400, theme=themes.THEME_SOLARIZED)
-mainmenu.add.text_input('Name: ', default='username', maxchar=20)
+mainmenu.add.text_input('Name: ', default='username', maxchar=20, textinput_id='username')
 mainmenu.add.button('Play', start_the_game)
 mainmenu.add.button('Levels', level_menu)
 mainmenu.add.button('Quit', pygame_menu.events.EXIT)
@@ -34,6 +34,7 @@ loading.add.progress_bar("Progress", progressbar_id="1", default=0, width=200)
 update_loading = pygame.USEREVENT + 0
 
 arrow = pygame_menu.widgets.LeftArrowSelection(arrow_size=(10, 15))
+
 
 # running = True
 # while running:
@@ -62,6 +63,8 @@ while True:
         if event.type == pygame.QUIT:
             exit()
 
+    menu_data = mainmenu.get_input_data()
+    print(menu_data['username'])
     if mainmenu.is_enabled():
         mainmenu.update(events)
         mainmenu.draw(surface)

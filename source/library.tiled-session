@@ -1,0 +1,63 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "library/library_1.tsx",
+    "expandedProjectPaths": [
+        ".",
+        "library"
+    ],
+    "fileStates": {
+        "library/library.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 311.33333333333326,
+                "y": 155.33333333333331
+            }
+        },
+        "library/library_1.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "library/library_2.tsx": {
+            "scaleInDock": 4,
+            "scaleInEditor": 1
+        },
+        "library/library_3.tsx": {
+            "scaleInDock": 1.5,
+            "scaleInEditor": 1
+        },
+        "library_1.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.imagePath": "D:/Python/Innopolis/Game--Akselerator-/source",
+    "map.height": 25,
+    "map.lastUsedFormat": "tmx",
+    "map.renderOrder": null,
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 40,
+    "openFiles": [
+        "library/library.tmx",
+        "library/library_1.tsx",
+        "library/library_2.tsx",
+        "library/library_3.tsx"
+    ],
+    "project": "library.tiled-project",
+    "recentFiles": [
+        "library/library.tmx",
+        "library/library_3.tsx",
+        "library/library_2.tsx",
+        "library/library_1.tsx",
+        "library_1.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}
